@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FcSearch } from 'react-icons/fc';
+import toast, { Toaster } from 'react-hot-toast';
 
 export class Searchbar extends Component {
   state = {
@@ -13,7 +14,7 @@ export class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.imageName.trim() === '') {
-      alert('Введите текст в строке поиска');
+      toast.error('Enter text in the search bar! 👀');
       return;
     }
     this.props.onSubmit(this.state.imageName);
@@ -36,6 +37,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
           />
         </form>
+        <Toaster />
       </header>
     );
   }
