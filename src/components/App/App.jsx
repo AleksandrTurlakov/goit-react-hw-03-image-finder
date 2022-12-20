@@ -1,10 +1,14 @@
 import { Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Searchbar } from './Searchbar/Searchbar';
-import { getImages } from '../services/api';
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import { LoadMore } from './LoadMore/LoadMore';
-import { Loader } from './Loader/Loader';
+import ScrollToTop from 'react-scroll-to-top';
+import { ReactComponent as MySVG } from '../Svg/icon-bold-arrow-up.svg';
+import { Searchbar } from '../Searchbar/Searchbar';
+import { getImages } from '../../services/api';
+import { ImageGallery } from '../ImageGallery/ImageGallery';
+import { LoadMore } from '../LoadMore/LoadMore';
+import { Loader } from '../Loader/Loader';
+import { GlobalStyle } from '../GlobalStyle/GlobalStyle';
+import { Container } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -12,6 +16,7 @@ export class App extends Component {
     imageName: '',
     page: 1,
     isLoading: false,
+    totalHits: 0,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -26,14 +31,13 @@ export class App extends Component {
           this.state.page
         );
         this.setState(prevState => ({
-          imageGallery: [...prevState.imageGallery, ...imageGallery],
+          imageGallery: [...prevState.imageGallery, ...imageGallery.hits],
         }));
-        console.log(imageGallery);
-        if (imageGallery.length === 0) {
+        this.setState({ totalHits: imageGallery.totalHits });
+        if (imageGallery.totalHits === 0)
           toast.error(
             'Sorry, there are no images matching your search query. Please try again.'
           );
-        }
       } catch {
         toast.error('Something went wrong, please try again! 🤷‍♂️🤷‍♀️🤷‍♂️');
       } finally {
@@ -55,13 +59,15 @@ export class App extends Component {
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, imageGallery, page } = this.state;
+    const totalPage = imageGallery.length / this.state.totalHits;
     return (
-      <div>
+      <Container>
         <Searchbar onSubmit={this.addImage} />
-        <ImageGallery items={this.state.imageGallery} />
+        <GlobalStyle />
+        <ImageGallery items={imageGallery} />
         {isLoading && <Loader />}
-        {this.state.imageGallery.length > 0 && (
+        {imageGallery.length !== 0 && totalPage !== 1 && page < 42 && (
           <LoadMore onClick={this.loadMore} />
         )}
         <Toaster
@@ -73,7 +79,8 @@ export class App extends Component {
             },
           }}
         />
-      </div>
+        <ScrollToTop smooth component={<MySVG style={{ display: 'flex' }} />} />
+      </Container>
     );
   }
 }

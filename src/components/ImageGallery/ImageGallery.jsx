@@ -1,14 +1,24 @@
 import React from 'react';
-import { ImageGalleryItem } from 'components/ImageGalleryItem';
+import PropTypes from 'prop-types';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryWrap, ImageGalleryCard } from './ImageGallery.styled';
 
 export const ImageGallery = ({ items }) => {
   return (
-    <>
+    <ImageGalleryWrap>
       {items.map(item => (
-        <li key={item.id} id={item.id}>
+        <ImageGalleryCard key={item.id} id={item.id}>
           <ImageGalleryItem item={item} />
-        </li>
+        </ImageGalleryCard>
       ))}
-    </>
+    </ImageGalleryWrap>
   );
+};
+
+ImageGallery.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };

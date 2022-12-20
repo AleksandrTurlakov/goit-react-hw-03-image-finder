@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FcSearch } from 'react-icons/fc';
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  HeaderForm,
+  SearchForm,
+  SearchFormButton,
+  SearchFormInput,
+} from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -23,22 +30,25 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.handleSubmit}>
-          <button type="submit">
+      <HeaderForm>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchFormButton type="submit">
             <FcSearch />
-            <span></span>
-          </button>
-          <input
+          </SearchFormButton>
+          <SearchFormInput
             type="text"
             name="imageName"
             value={this.state.imageName}
             onChange={this.handleimageNameChange}
             placeholder="Search images and photos"
           />
-        </form>
+        </SearchForm>
         <Toaster />
-      </header>
+      </HeaderForm>
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

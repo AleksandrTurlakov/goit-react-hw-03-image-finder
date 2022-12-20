@@ -8,5 +8,5 @@ const ORIENTATITON = `"horizontal"`;
 export const getImages = async (imageName, page) => {
   const searchQuery = `${BASE_URL}?q=${imageName}&page=${page}&key=${KEY}&image_type=${IMAGE_TYPE}&orientation=${ORIENTATITON}&per_page=12`;
   const response = await axios.get(searchQuery);
-  return response.data.hits;
+  return response.data;
 };

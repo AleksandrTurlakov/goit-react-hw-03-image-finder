@@ -9,7 +9,7 @@ export const Loader = () => {
       ariaLabel="MagnifyingGlass-loading"
       wrapperStyle={{
         justifyContent: 'center',
-        marginTop: '50vh',
+        marginTop: '40vh',
         marginLeft: '50vw',
         transform: 'translate(-50%, -50%)',
       }}
